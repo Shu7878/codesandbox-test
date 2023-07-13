@@ -1,80 +1,55 @@
 import "./styles.css";
 
-document.getElementById("app").innerHTML = `
-<h1>Hello Vanilla!</h1>
-<div>
-  We use the same configuration as Parcel to bundle this sandbox, you can find more
-  info about Parcel 
-  <a href="https://parceljs.org" target="_blank" rel="noopener noreferrer">here</a>.
-</div>
-`;
+const onClickAdd = (event) => {
+  // テキストボックスの値を取得し、初期化する
+  const inputText = document.getElementById("add-text").value;
+  document.getElementById("add-text").value = "";
 
-// function func1(str) {
-//   return str;
-// }
+  // div生成
+  const div = document.createElement("div");
+  div.className = "list-row";
 
-// const func2 = function (str) {
-//   return str;
-// };
+  const p = document.createElement("p");
+  p.innerText = inputText;
+  div.appendChild(p);
 
-// const func3 = (str) => {
-//   return str;
-// };
-
-// const plusNumber = (firstNum, secondNum) => firstNum + secondNum;
-
-// console.log(plusNumber(1, 4));
-
-// const myProfile = {
-//   name: "sagara",
-//   age: 29,
-// };
-
-// const { name, age } = myProfile;
-
-// const message = `私の名前は${name}です。年齢は${age}です。`;
-
-// console.log(message);
-
-// const arry1 = [1, 2];
-
-// console.log(arry1);
-// console.log(...arry1);
-// const sumFunc = (num1, num2) => num1 + num2;
-// console.log(sumFunc(...arry1));
-
-// const arry2 = [1, 2, 3, 4, 5];
-// const [num1, num2, ...arry3] = arry2;
-// console.log(num1);
-// console.log(num2);
-// console.log(arry3);
-
-// const arry4 = [10, 20];
-// const arry5 = [30, 40];
-
-// const arry6 = [...arry4];
-// const arry7 = [...arry4, ...arry5];
-// console.log(arry6);
-// console.log(arry7);
-
-const nameArray = ["田中真一", "山田はじめ", "斎藤啓介"];
-
-// const nameArray3 =
-nameArray
-  .filter((name) => name.length < 5)
-  .map((name, index) => {
-    console.log(`${index + 1}番目の苗字は${name}さんです`);
+  // button(完了)タグ生成
+  const completeButton = document.createElement("button");
+  completeButton.innerText = "完了";
+  completeButton.addEventListener("click", () => {
+    alert("完了");
   });
-// const nameArray2 = nameArray.map((name) => {
-//   return name;
-// });
-// console.log(nameArray2);
-// nameArray.map((name) => console.log(name));
 
-// const numArray = [1, 2, 3, 4, 5];
-// const numArray2 = numArray
-//   .filter((num) => {
-//     return num % 2 === 1;
-//   })
-//   .map((num) => console.log(num));
-// console.log(numArray2);
+  // button(削除)タグ生成
+  const deleteButton = document.createElement("button");
+  deleteButton.innerText = "削除";
+  deleteButton.addEventListener("click", (deleteEvent) => {
+    deleteEvent.preventDefault();
+    alert("削除");
+    // 押された削除ボタンの親タグ(div)を削除
+    const deleteTarget = deleteButton.parentNode;
+    console.log(deleteTarget);
+    document.getElementById("incomplete-list").removeChild(deleteTarget);
+  });
+
+  div.appendChild(completeButton);
+  div.appendChild(deleteButton);
+
+  // li生成
+  const li = document.createElement("li");
+  // liタグの子要素に各要素を設定
+  li.appendChild(div);
+
+  // 未完了のリストに追加
+  document.getElementById("incomplete-list").appendChild(li);
+  event.preventDefault();
+};
+
+alert("aaa");
+document
+  .getElementById("add-button")
+  .addEventListener("click", (event) => onClickAdd(event));
+
+// console.log(li.outerHTML);
+// console.log(document.getElementById("incomplete-list").outerHTML);
+// console.log(document.getElementById("incomplete-list").outerHTML);
