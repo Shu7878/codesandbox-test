@@ -1,80 +1,128 @@
 import "./styles.css";
 
-document.getElementById("app").innerHTML = `
-<h1>Hello Vanilla!</h1>
-<div>
-  We use the same configuration as Parcel to bundle this sandbox, you can find more
-  info about Parcel 
-  <a href="https://parceljs.org" target="_blank" rel="noopener noreferrer">here</a>.
-</div>
-`;
+const onClickAdd = (event) => {
+  event.preventDefault();
 
-// function func1(str) {
-//   return str;
-// }
+  // テキストボックスの値を取得し、初期化する
+  const inputText = document.getElementById("add-text").value;
+  document.getElementById("add-text").value = "";
 
-// const func2 = function (str) {
-//   return str;
-// };
+  createIncompleteList(inputText);
+};
 
-// const func3 = (str) => {
-//   return str;
-// };
+// 削除処理をするボタンを作成
+const createDeleteButton = (parentId, buttonInnerText) => {
+  // buttonタグ生成
+  const deleteButton = buttonTag(buttonInnerText);
 
-// const plusNumber = (firstNum, secondNum) => firstNum + secondNum;
-
-// console.log(plusNumber(1, 4));
-
-// const myProfile = {
-//   name: "sagara",
-//   age: 29,
-// };
-
-// const { name, age } = myProfile;
-
-// const message = `私の名前は${name}です。年齢は${age}です。`;
-
-// console.log(message);
-
-// const arry1 = [1, 2];
-
-// console.log(arry1);
-// console.log(...arry1);
-// const sumFunc = (num1, num2) => num1 + num2;
-// console.log(sumFunc(...arry1));
-
-// const arry2 = [1, 2, 3, 4, 5];
-// const [num1, num2, ...arry3] = arry2;
-// console.log(num1);
-// console.log(num2);
-// console.log(arry3);
-
-// const arry4 = [10, 20];
-// const arry5 = [30, 40];
-
-// const arry6 = [...arry4];
-// const arry7 = [...arry4, ...arry5];
-// console.log(arry6);
-// console.log(arry7);
-
-const nameArray = ["田中真一", "山田はじめ", "斎藤啓介"];
-
-// const nameArray3 =
-nameArray
-  .filter((name) => name.length < 5)
-  .map((name, index) => {
-    console.log(`${index + 1}番目の苗字は${name}さんです`);
+  deleteButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    // 押された削除ボタンの親タグを削除
+    document.getElementById(parentId).removeChild(deleteButton.parentNode);
   });
-// const nameArray2 = nameArray.map((name) => {
-//   return name;
-// });
-// console.log(nameArray2);
-// nameArray.map((name) => console.log(name));
+  return deleteButton;
+};
 
-// const numArray = [1, 2, 3, 4, 5];
-// const numArray2 = numArray
-//   .filter((num) => {
-//     return num % 2 === 1;
-//   })
-//   .map((num) => console.log(num));
-// console.log(numArray2);
+// 未完了リストに追加する関数
+const createIncompleteList = (text) => {
+  const li = liTag("list-row");
+  const p = pTag(text);
+  const completeButton = buttonTag("完了");
+  const deleteButton = createDeleteButton("incomplete-list", "削除");
+
+  completeButton.addEventListener("click", (completeEvent) => {
+    completeEvent.preventDefault();
+    // 押された完了ボタンの親タグ(li)を削除
+    document
+      .getElementById("incomplete-list")
+      .removeChild(completeButton.parentNode);
+
+    const addTarget = completeButton.parentNode;
+    const text = addTarget.firstElementChild.innerText;
+
+    const li = liTag("list-row");
+    const p = pTag(text);
+    const backButton = createDeleteButton("complete-list", "戻す");
+    backButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      // 再帰関数となるため、実務では注意が必要
+      createIncompleteList(text);
+    });
+
+    li.appendChild(p);
+    li.appendChild(backButton);
+    document.getElementById("complete-list").appendChild(li);
+  });
+
+  // liタグの子要素に各要素を設定
+  li.appendChild(p);
+  li.appendChild(completeButton);
+  li.appendChild(deleteButton);
+
+  // 未完了のリストに追加
+  document.getElementById("incomplete-list").appendChild(li);
+};
+
+const pTag = (text) => {
+  const p = document.createElement("p");
+  p.innerText = text;
+  return p;
+};
+
+const liTag = (className) => {
+  const li = document.createElement("li");
+  li.className = className;
+  return li;
+};
+
+const buttonTag = (buttonInnerText) => {
+  const button = document.createElement("button");
+  button.innerText = buttonInnerText;
+  return button;
+};
+
+document
+  .getElementById("add-button")
+  .addEventListener("click", (event) => onClickAdd(event));
+
+// // div生成
+// const div = document.createElement("div");
+// div.className = "list-row";
+
+// const completeButton = document.createElement("button");
+// completeButton.innerText = "完了";
+// completeButton.addEventListener("click", (completeEvent) => {
+//   completeEvent.preventDefault();
+
+//   // 押された完了ボタンの親タグ(li)を削除
+//   deleteFromIncompleteList(completeButton.parentNode);
+// });
+
+// const deleteButton = document.createElement("button");
+// deleteButton.innerText = "削除";
+// deleteButton.addEventListener("click", (deleteEvent) => {
+//   deleteEvent.preventDefault();
+
+//   // 押された削除ボタンの親タグ(li)を削除
+//   deleteFromIncompleteList(deleteButton.parentNode);
+// });
+
+// const liAfterBack = liTag("list-row");
+// const pAfterBack = pTag(text);
+// const completeButtonAfterBack = createDeleteButton(
+//   "incomplete-list",
+//   "完了"
+// );
+// completeButtonAfterBack.addEventListener("click", (event) => {
+//   event.preventDefault();
+//   const liAfterBackAfter = liTag("list-row");
+//   const pAfterBackAfter = pTag(text);
+//   liAfterBackAfter.appendChild(pAfterBackAfter);
+//   liAfterBackAfter.appendChild(backButton);
+//   document.getElementById("complete-list").appendChild(liAfterBackAfter);
+// });
+
+// liAfterBack.appendChild(pAfterBack);
+// liAfterBack.appendChild(completeButtonAfterBack);
+// liAfterBack.appendChild(deleteButtonAfterBack);
+// document.getElementById("incomplete-list").appendChild(liAfterBack);

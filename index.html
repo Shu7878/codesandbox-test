@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>To Do List(JavsScript)</title>
+    <meta charset="UTF-8" />
+  </head>
 
-<head>
-	<title>Parcel Sandbox</title>
-	<meta charset="UTF-8" />
-</head>
+  <body>
+    <form>
+      <div class="input-area">
+        <input id="add-text" placeholder="ToDoを入力" />
+        <button id="add-button">追加</button>
+      </div>
+      <div class="incomplete-area">
+        <p class="title">未完了のTODO</p>
+        <ul id="incomplete-list"></ul>
+      </div>
+      <div class="complete-area">
+        <p class="title">完了したTODO</p>
+        <ul id="complete-list"></ul>
+      </div>
+    </form>
 
-<body>
-	<div id="app"></div>
-	<p>修正しました</p>
-
-	<script src="src/index.js">
-	</script>
-</body>
-
+    <script src="src/index.js"></script>
+  </body>
 </html>
+
+<!-- <div class="list-row">
+	<li>ToDoです</li>
+	<button>完了</button>
+	<button>削除</button>
+</div> -->
